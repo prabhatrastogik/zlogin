@@ -5,3 +5,7 @@ __pycache__/
 *.log
 .vscode
 local/
+build/
+dist/
+venv2/
+*egg-info
