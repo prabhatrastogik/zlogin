@@ -1,0 +1,7 @@
+venv/
+*.ipynb
+.env
+__pycache__/
+*.log
+.vscode
+local/
