@@ -7,5 +7,4 @@ __pycache__/
 local/
 build/
 dist/
-venv2/
 *egg-info

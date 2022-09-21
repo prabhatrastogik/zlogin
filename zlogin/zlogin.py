@@ -16,6 +16,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ChromeOptions
 
+from kiteconnect import KiteConnect, KiteTicker
+
 logger = getLogger("Zlogin")
 logger.setLevel(INFO)
 
@@ -30,7 +32,7 @@ def add_env_vars_from_file():
 
 def get_env_vars():
     add_env_vars_from_file()
-    all_keys = dict(
+    return dict(
         api_key=os.getenv('ZAPI'),
         api_secret=os.getenv('ZSECRET'),
         api_auth=os.getenv('ZAPI_AUTH'),
@@ -38,7 +40,6 @@ def get_env_vars():
         pw=os.getenv('ZPASS'),
         twofa_key=os.getenv('ZTFA'),
     )
-    return all_keys
 
 
 def get_driver():
@@ -124,5 +125,23 @@ def fetch_access_token():
         raise e
 
 
+def fetch_kiteconnect_instance():
+    access_token = fetch_access_token()
+    return KiteConnect(get_env_vars()['api_key'], access_token)
+
+
+def fetch_kiteticker_instance():
+    """
+    Returns a KiteTicker Object (WebSocket) - that can be used by defining:
+        kws.on_ticks = on_ticks
+        kws.on_connect = on_connect
+        kws.on_close = on_close
+    """
+    access_token = fetch_access_token()
+    return KiteTicker(get_env_vars()['api_key'], access_token)
+
+
 if __name__ == "__main__":
     print(fetch_access_token())
+    print(fetch_kiteconnect_instance())
+    print(fetch_kiteticker_instance())

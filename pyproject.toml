@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "zlogin"
+version = "0.0.4"
+description = "Zerodha Login Automation - Selenium Based"
+authors = ["Prabhat Rastogi <prabhatrastogik@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/prabhatrastogik/zlogin"
+keywords = [
+    "Zerodha",
+    "Automated Login",
+    "Selenium Login"
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+undetected-chromedriver = "^3.1.5"
+selenium = "^4.3.0"
+boto3 = "^1.24.39"
+kiteconnect = "^4.1.0"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
