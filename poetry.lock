@@ -300,6 +300,14 @@ docs = ["sphinx", "sphinx-rtd-theme"]
 test = ["flaky", "pretend", "pytest (>=3.0.1)"]
 
 [[package]]
+name = "pyotp"
+version = "2.7.0"
+description = "Python One Time Password Library"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "pysocks"
 version = "1.7.1"
 description = "A Python SOCKS client module. See https://github.com/Anorov/PySocks for more information."
@@ -585,7 +593,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "c68fc21d678c539d7d9e5ab7c80c6454fe30cd066931679f892188e142e34106"
+content-hash = "44c3661ab006ff5f52ac1f082d7b6fe16a121bfaf2cabc0a5f90d0dddc909027"
 
 [metadata.files]
 async-generator = [
@@ -792,6 +800,10 @@ pycparser = [
 pyopenssl = [
     {file = "pyOpenSSL-22.0.0-py2.py3-none-any.whl", hash = "sha256:ea252b38c87425b64116f808355e8da644ef9b07e429398bfece610f893ee2e0"},
     {file = "pyOpenSSL-22.0.0.tar.gz", hash = "sha256:660b1b1425aac4a1bea1d94168a85d99f0b3144c869dd4390d27629d0087f1bf"},
+]
+pyotp = [
+    {file = "pyotp-2.7.0-py3-none-any.whl", hash = "sha256:2e746de4f15685878df6d022c5691627af9941eec18e0d513f05497f5fa7711f"},
+    {file = "pyotp-2.7.0.tar.gz", hash = "sha256:ce989faba0df77dc032b45e51c6cca42bcf20896c8d3d1e7cd759a53dc7d6cb5"},
 ]
 pysocks = [
     {file = "PySocks-1.7.1-py27-none-any.whl", hash = "sha256:08e69f092cc6dbe92a0fdd16eeb9b9ffbc13cadfe5ca4c7bd92ffb078b293299"},

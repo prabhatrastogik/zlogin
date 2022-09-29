@@ -7,18 +7,19 @@ import sys
 from time import sleep
 from urllib.parse import quote_plus
 from datetime import datetime
-
-from logging import getLogger, INFO
+from logging import getLogger, INFO, StreamHandler
 
 import boto3
 from undetected_chromedriver import Chrome
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ChromeOptions
+from pyotp import TOTP
 
 from kiteconnect import KiteConnect, KiteTicker
 
 logger = getLogger("Zlogin")
+logger.addHandler(StreamHandler(sys.stdout))
 logger.setLevel(INFO)
 
 
@@ -38,7 +39,7 @@ def get_env_vars():
         api_auth=os.getenv('ZAPI_AUTH'),
         user_id=os.getenv('ZUSER'),
         pw=os.getenv('ZPASS'),
-        twofa_key=os.getenv('ZTFA'),
+        totp_key=os.getenv('ZTOTP'),
     )
 
 
@@ -51,32 +52,33 @@ def get_driver():
     return driver
 
 
-def generate_request_token(api_key, user_id, pw, twofa_key, api_auth, **kwargs):
+def generate_request_token(api_key, user_id, pw, totp_key, api_auth, **kwargs):
     logger.info("Generate Function Started")
     driver = get_driver()
     logger.info("Driver Acquired")
     driver.get(
         f'https://kite.trade/connect/login?v=3&api_key={api_key}&redirect_params={quote_plus(f"api_auth={api_auth}")}')
     login_id = WebDriverWait(driver, 10).until(
-        lambda x: x.find_element(By.XPATH, '//*[@id="userid"]'))
+        lambda x: x.find_element(By.XPATH, '//input[@type="text"]'))
     login_id.send_keys(user_id)
     logger.info("USER ID Sent")
     pwd = WebDriverWait(driver, 10).until(
-        lambda x: x.find_element(By.XPATH, '//*[@id="password"]'))
+        lambda x: x.find_element(By.XPATH, '//input[@type="password"]'))
     pwd.send_keys(pw)
     logger.info("Pw Sent")
     sleep(1)
     submit = WebDriverWait(driver, 10).until(lambda x: x.find_element(
-        By.XPATH, '//*[@id="container"]/div/div/div[2]/form/div[4]/button'))
+        By.XPATH, '//button[@type="submit"]'))
     submit.click()
+    sleep(1)
     logger.info("Login Btn Clicked")
     totp = WebDriverWait(driver, 10).until(
-        lambda x: x.find_element(By.XPATH, '//*[@id="pin"]'))
-    totp.send_keys(twofa_key)
+        lambda x: x.find_element(By.XPATH, '//form//input'))
+    totp.send_keys(TOTP(totp_key).now())
     logger.info("TFA Sent")
-    sleep(2)
+    sleep(1)
     continue_btn = WebDriverWait(driver, 10).until(lambda x: x.find_element(
-        By.XPATH, '//*[@id="container"]/div/div/div[2]/form/div[3]/button'))
+        By.XPATH, '//button[@type="submit"]'))
     continue_btn.click()
     logger.info("Request Token Generated!")
 
@@ -88,7 +90,7 @@ def fetch_access_token():
     Args: 
         None
     Requirements: 
-        A '.zerodha' file in the home directory with values for ZAPI, ZSECRET, ZAPI_AUTH, ZUSER, ZPASS, ZTFA
+        A '.zerodha' file in the home directory with values for ZAPI, ZSECRET, ZAPI_AUTH, ZUSER, ZPASS, ZTOTP
         Sample in the repo
     """
     dynamodb = boto3.resource('dynamodb')
