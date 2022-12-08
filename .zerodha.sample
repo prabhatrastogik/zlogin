@@ -1,6 +1,0 @@
-ZAPI=ZerodhaAPI-Key
-ZSECRET=ZerodhaAPI-Secret
-ZUSER=ZerodhaUser
-ZPASS=ZerodhaPassword
-ZTOTP=ZerodhaTOTPKey_ForAuthApp(GoogleAuth etc.)
-ZAPI_AUTH=RandomPassword-ShouldBeSameAsLambda

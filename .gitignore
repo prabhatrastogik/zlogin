@@ -8,3 +8,5 @@ local/
 build/
 dist/
 *egg-info
+.venv
+.ipynb_*
